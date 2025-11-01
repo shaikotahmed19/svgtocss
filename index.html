@@ -20,6 +20,12 @@
                     <button id="clearBtn" class="btn-clear">Clear</button>
                 </div>
                 <textarea id="svgInput" class="editor" placeholder="Paste your SVG code here...&#10;&#10;Example:&#10;&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; viewBox=&quot;0 0 100 100&quot;&gt;&#10;  &lt;circle cx=&quot;50&quot; cy=&quot;50&quot; r=&quot;40&quot; fill=&quot;#3498db&quot;/&gt;&#10;&lt;/svg&gt;"></textarea>
+                <div class="preview-section">
+                    <div class="preview-box">
+                        <div class="preview-label">Preview</div>
+                        <div id="previewInput" class="preview-content"></div>
+                    </div>
+                </div>
             </div>
             
             <div class="editor-box">
@@ -28,6 +34,12 @@
                     <button id="copyBtn" class="btn-copy">Copy</button>
                 </div>
                 <textarea id="cssOutput" class="editor output" readonly placeholder="CSS code will appear here..."></textarea>
+                <div class="preview-section">
+                    <div class="preview-box">
+                        <div class="preview-label">Result Preview</div>
+                        <div id="previewOutput" class="preview-content"></div>
+                    </div>
+                </div>
             </div>
         </div>
         

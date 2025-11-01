@@ -5,6 +5,8 @@ const copyBtn = document.getElementById('copyBtn');
 const clearBtn = document.getElementById('clearBtn');
 const exampleBtns = document.querySelectorAll('.example-btn');
 const toast = document.getElementById('toast');
+const previewInput = document.getElementById('previewInput');
+const previewOutput = document.getElementById('previewOutput');
 
 // Convert SVG to CSS background-image
 function convertSvgToCss(svgCode) {
@@ -36,6 +38,56 @@ function updateOutput() {
     const svgCode = svgInput.value;
     const cssCode = convertSvgToCss(svgCode);
     cssOutput.value = cssCode;
+    
+    // Update preview boxes
+    updatePreviewInput(svgCode);
+    updatePreviewOutput(cssCode);
+}
+
+// Update input preview
+function updatePreviewInput(svgCode) {
+    if (!svgCode || svgCode.trim() === '') {
+        previewInput.innerHTML = '<div style="color: #adb5bd; font-style: italic;">No SVG to preview</div>';
+        return;
+    }
+    
+    try {
+        // Validate and display SVG
+        const cleanSvg = svgCode.trim();
+        if (!cleanSvg.toLowerCase().startsWith('<svg')) {
+            previewInput.innerHTML = '<div style="color: #dc3545;">Invalid SVG</div>';
+            return;
+        }
+        
+        previewInput.innerHTML = cleanSvg;
+    } catch (error) {
+        previewInput.innerHTML = '<div style="color: #dc3545;">Error rendering SVG</div>';
+    }
+}
+
+// Update output preview
+function updatePreviewOutput(cssCode) {
+    if (!cssCode || cssCode.trim() === '' || cssCode.includes('Error:')) {
+        previewOutput.innerHTML = '<div style="color: #adb5bd; font-style: italic;">No result to preview</div>';
+        return;
+    }
+    
+    try {
+        // Extract the background-image URL from CSS
+        const urlMatch = cssCode.match(/url\(["']([^"']+)["']\)/);
+        if (urlMatch) {
+            // Apply the CSS background-image directly to show the result
+            previewOutput.innerHTML = '';
+            previewOutput.style.backgroundImage = `url("${urlMatch[1]}")`;
+            previewOutput.style.backgroundSize = 'contain';
+            previewOutput.style.backgroundRepeat = 'no-repeat';
+            previewOutput.style.backgroundPosition = 'center';
+        } else {
+            previewOutput.innerHTML = '<div style="color: #dc3545;">Could not extract URL</div>';
+        }
+    } catch (error) {
+        previewOutput.innerHTML = '<div style="color: #dc3545;">Error rendering result</div>';
+    }
 }
 
 // Copy CSS to clipboard
@@ -62,6 +114,9 @@ async function copyToClipboard() {
 function clearInput() {
     svgInput.value = '';
     cssOutput.value = '';
+    previewOutput.style.backgroundImage = '';
+    updatePreviewInput('');
+    updatePreviewOutput('');
     svgInput.focus();
     showToast('Input cleared');
 }
