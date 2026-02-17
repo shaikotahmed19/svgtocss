@@ -366,6 +366,29 @@ body.theme-dark .editor::placeholder {
     line-height: 1.6;
 }
 
+.seo-section {
+    padding: 24px 30px 32px;
+    background: #ffffff;
+}
+
+.seo-section h2 {
+    font-size: 1.4em;
+    margin-bottom: 10px;
+    color: #343a40;
+}
+
+.seo-section p {
+    margin-bottom: 10px;
+    color: #6c757d;
+    line-height: 1.7;
+    font-size: 0.98em;
+}
+
+.seo-section code {
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 0.95em;
+}
+
 body.theme-dark .examples {
     background: #020617;
     border-top-color: #1f2937;
@@ -396,6 +419,18 @@ body.theme-dark .info-box h4 {
 }
 
 body.theme-dark .info-box p {
+    color: #9ca3af;
+}
+
+body.theme-dark .seo-section {
+    background: #020617;
+}
+
+body.theme-dark .seo-section h2 {
+    color: #e5e7eb;
+}
+
+body.theme-dark .seo-section p {
     color: #9ca3af;
 }
 
