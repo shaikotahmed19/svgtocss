@@ -2,7 +2,7 @@
 const svgInput = document.getElementById('svgInput');
 const cssOutput = document.getElementById('cssOutput');
 const copyBtn = document.getElementById('copyBtn');
-const clearBtn = document.getElementById('clearBtn');
+const clearBtn = document.getElementById('pasteAndClearBtn');
 const exampleBtns = document.querySelectorAll('.example-btn');
 const toast = document.getElementById('toast');
 const previewInput = document.getElementById('previewInput');
@@ -42,6 +42,9 @@ function updateOutput() {
     // Update preview boxes
     updatePreviewInput(svgCode);
     updatePreviewOutput(cssCode);
+
+    // Update clear/paste button label based on input content
+    updateClearPasteButton();
 }
 
 // Update input preview
@@ -90,6 +93,49 @@ function updatePreviewOutput(cssCode) {
     }
 }
 
+// Update Clear/Paste button label
+function updateClearPasteButton() {
+    const hasContent = svgInput.value.trim() !== '';
+    clearBtn.textContent = hasContent ? 'Clear' : 'Paste';
+}
+
+// Handle Clear/Paste button click
+async function handleClearPasteClick() {
+    const hasContent = svgInput.value.trim() !== '';
+
+    if (hasContent) {
+        // Clear existing SVG/code
+        clearInput();
+    } else {
+        // Paste from clipboard into SVG input
+        await pasteFromClipboard();
+    }
+}
+
+// Paste SVG code from clipboard
+async function pasteFromClipboard() {
+    if (!navigator.clipboard || !navigator.clipboard.readText) {
+        showToast('Clipboard paste not supported in this browser.', true);
+        return;
+    }
+
+    try {
+        const text = await navigator.clipboard.readText();
+
+        if (!text) {
+            showToast('Clipboard is empty.', true);
+            return;
+        }
+
+        svgInput.value = text;
+        updateOutput();
+        svgInput.focus();
+        showToast('Pasted from clipboard.');
+    } catch (error) {
+        showToast('Unable to read from clipboard.', true);
+    }
+}
+
 // Copy CSS to clipboard
 async function copyToClipboard() {
     const cssCode = cssOutput.value;
@@ -117,6 +163,7 @@ function clearInput() {
     previewOutput.style.backgroundImage = '';
     updatePreviewInput('');
     updatePreviewOutput('');
+    updateClearPasteButton();
     svgInput.focus();
     showToast('Input cleared');
 }
@@ -143,7 +190,7 @@ svgInput.addEventListener('input', updateOutput);
 
 copyBtn.addEventListener('click', copyToClipboard);
 
-clearBtn.addEventListener('click', clearInput);
+clearBtn.addEventListener('click', handleClearPasteClick);
 
 exampleBtns.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -168,4 +215,7 @@ document.addEventListener('keydown', (e) => {
 
 // Initialize
 updateOutput();
+
+// Set initial state of Clear/Paste button
+updateClearPasteButton();
 
