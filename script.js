@@ -7,6 +7,12 @@ const exampleBtns = document.querySelectorAll('.example-btn');
 const toast = document.getElementById('toast');
 const previewInput = document.getElementById('previewInput');
 const previewOutput = document.getElementById('previewOutput');
+const themeDropdown = document.getElementById('themeDropdown');
+const themeToggleBtn = document.getElementById('themeToggleBtn');
+const themeMenu = document.getElementById('themeMenu');
+const themeMenuButtons = document.querySelectorAll('.theme-menu-item');
+
+const THEME_STORAGE_KEY = 'svgToCssThemePreference';
 
 // Convert SVG to CSS background-image
 function convertSvgToCss(svgCode) {
@@ -136,6 +142,61 @@ async function pasteFromClipboard() {
     }
 }
 
+// THEME HANDLING
+
+function isSystemDark() {
+    return window.matchMedia &&
+        window.matchMedia('(prefers-color-scheme: dark)').matches;
+}
+
+function setActiveThemeButton(theme) {
+    themeMenuButtons.forEach(btn => {
+        const btnTheme = btn.getAttribute('data-theme');
+        btn.classList.toggle('active', btnTheme === theme);
+        btn.setAttribute('aria-checked', btnTheme === theme ? 'true' : 'false');
+    });
+}
+
+function applyTheme(theme) {
+    const effectiveDark =
+        theme === 'dark' || (theme === 'system' && isSystemDark());
+
+    document.body.classList.toggle('theme-dark', effectiveDark);
+    setActiveThemeButton(theme);
+}
+
+function initTheme() {
+    const saved =
+        localStorage.getItem(THEME_STORAGE_KEY) || 'system';
+
+    applyTheme(saved);
+
+    // React to OS theme changes only when in "system" mode
+    if (window.matchMedia) {
+        const media = window.matchMedia('(prefers-color-scheme: dark)');
+        media.addEventListener('change', () => {
+            const current =
+                localStorage.getItem(THEME_STORAGE_KEY) || 'system';
+            if (current === 'system') {
+                applyTheme('system');
+            }
+        });
+    }
+}
+
+function closeThemeMenu() {
+    if (!themeDropdown) return;
+    themeDropdown.classList.remove('open');
+    if (themeToggleBtn) themeToggleBtn.setAttribute('aria-expanded', 'false');
+}
+
+function toggleThemeMenu() {
+    if (!themeDropdown) return;
+    const willOpen = !themeDropdown.classList.contains('open');
+    themeDropdown.classList.toggle('open', willOpen);
+    if (themeToggleBtn) themeToggleBtn.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+}
+
 // Copy CSS to clipboard
 async function copyToClipboard() {
     const cssCode = cssOutput.value;
@@ -192,6 +253,31 @@ copyBtn.addEventListener('click', copyToClipboard);
 
 clearBtn.addEventListener('click', handleClearPasteClick);
 
+if (themeToggleBtn) {
+    themeToggleBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleThemeMenu();
+    });
+}
+
+themeMenuButtons.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const theme = btn.getAttribute('data-theme');
+        if (!theme) return;
+        localStorage.setItem(THEME_STORAGE_KEY, theme);
+        applyTheme(theme);
+        closeThemeMenu();
+    });
+});
+
+// Close menu when clicking outside
+document.addEventListener('click', (e) => {
+    if (!themeDropdown) return;
+    if (themeDropdown.contains(e.target)) return;
+    closeThemeMenu();
+});
+
 exampleBtns.forEach(btn => {
     btn.addEventListener('click', () => {
         const svgCode = btn.getAttribute('data-svg');
@@ -211,6 +297,11 @@ document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && document.activeElement === svgInput) {
         clearInput();
     }
+
+    // Esc closes theme menu
+    if (e.key === 'Escape') {
+        closeThemeMenu();
+    }
 });
 
 // Initialize
@@ -218,4 +309,7 @@ updateOutput();
 
 // Set initial state of Clear/Paste button
 updateClearPasteButton();
+
+// Initialize theme (default, dark, or system)
+initTheme();
 

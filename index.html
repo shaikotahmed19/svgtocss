@@ -60,6 +60,34 @@
         </div>
     </div>
     
+    <div class="theme-dropdown" id="themeDropdown">
+        <button
+            id="themeToggleBtn"
+            class="theme-fab"
+            type="button"
+            aria-label="Theme options"
+            aria-haspopup="true"
+            aria-expanded="false"
+            title="Theme"
+        >
+            <svg class="theme-fab-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 18a6 6 0 1 1 0-12 6 6 0 0 1 0 12Zm0-14a1 1 0 0 1 1-1h0a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0V4Zm0 16a1 1 0 0 1 1-1h0a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0v-1ZM4 13a1 1 0 0 1-1-1h0a1 1 0 0 1 1-1h1a1 1 0 1 1 0 2H4Zm16 0a1 1 0 0 1-1-1h0a1 1 0 0 1 1-1h1a1 1 0 1 1 0 2h-1ZM6.34 7.75a1 1 0 0 1 0-1.41h0a1 1 0 0 1 1.41 0l.7.7a1 1 0 1 1-1.41 1.41l-.7-.7Zm10.62 10.62a1 1 0 0 1 0-1.41h0a1 1 0 0 1 1.41 0l.7.7a1 1 0 1 1-1.41 1.41l-.7-.7ZM17.66 7.75l-.7.7a1 1 0 1 1-1.41-1.41l.7-.7a1 1 0 0 1 1.41 1.41ZM7.75 17.66l-.7.7a1 1 0 0 1-1.41-1.41l.7-.7a1 1 0 1 1 1.41 1.41Z"/>
+            </svg>
+        </button>
+
+        <div class="theme-menu" id="themeMenu" role="menu" aria-label="Theme">
+            <button class="theme-menu-item" type="button" data-theme="system" role="menuitemradio" aria-checked="false">
+                System default
+            </button>
+            <button class="theme-menu-item" type="button" data-theme="default" role="menuitemradio" aria-checked="false">
+                Default
+            </button>
+            <button class="theme-menu-item" type="button" data-theme="dark" role="menuitemradio" aria-checked="false">
+                Dark
+            </button>
+        </div>
+    </div>
+    
     <div id="toast" class="toast"></div>
     
     <script src="script.js"></script>
