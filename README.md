@@ -4,12 +4,12 @@ A beautiful, simple web application that converts SVG code to CSS `background-im
 
 ## Features
 
-- ✨ **Real-time conversion** - See results instantly as you type
-- 📋 **One-click copy** - Copy CSS to clipboard with a single click
-- 🎨 **Beautiful UI** - Modern gradient design with smooth animations
-- 📱 **Responsive** - Works perfectly on desktop and mobile
-- 🎯 **Example templates** - Quick-start with pre-built SVG examples
-- ⌨️ **Keyboard shortcuts** - 
+- **Real-time conversion** - See results instantly as you type
+- **One-click copy** - Copy CSS to clipboard with a single click
+- **Beautiful UI** - Modern gradient design with smooth animations
+- **Responsive** - Works perfectly on desktop and mobile
+- **Example templates** - Quick-start with pre-built SVG examples
+- **Keyboard shortcuts** - 
   - `Ctrl/Cmd + Enter`: Copy to clipboard
   - `Esc`: Clear input
 
