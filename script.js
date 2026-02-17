@@ -7,6 +7,8 @@ const exampleBtns = document.querySelectorAll('.example-btn');
 const toast = document.getElementById('toast');
 const previewInput = document.getElementById('previewInput');
 const previewOutput = document.getElementById('previewOutput');
+const bgRepeatSelect = document.getElementById('bgRepeat');
+const bgPositionSelect = document.getElementById('bgPosition');
 const themeDropdown = document.getElementById('themeDropdown');
 const themeToggleBtn = document.getElementById('themeToggleBtn');
 const themeMenu = document.getElementById('themeMenu');
@@ -42,12 +44,25 @@ function convertSvgToCss(svgCode) {
 // Update output in real-time
 function updateOutput() {
     const svgCode = svgInput.value;
-    const cssCode = convertSvgToCss(svgCode);
-    cssOutput.value = cssCode;
+    const baseCss = convertSvgToCss(svgCode);
+
+    let fullCss = baseCss;
+
+    // Append background options when SVG is valid
+    if (baseCss && !baseCss.startsWith('/* Error:')) {
+        const repeatValue = bgRepeatSelect ? bgRepeatSelect.value : 'no-repeat';
+        const positionValue = bgPositionSelect ? bgPositionSelect.value : 'center center';
+
+        fullCss = `${baseCss}
+background-repeat: ${repeatValue};
+background-position: ${positionValue};`;
+    }
+
+    cssOutput.value = fullCss;
     
     // Update preview boxes
     updatePreviewInput(svgCode);
-    updatePreviewOutput(cssCode);
+    updatePreviewOutput(fullCss);
 
     // Update clear/paste button label based on input content
     updateClearPasteButton();
@@ -55,6 +70,10 @@ function updateOutput() {
 
 // Update input preview
 function updatePreviewInput(svgCode) {
+    if (!previewInput) {
+        return;
+    }
+
     if (!svgCode || svgCode.trim() === '') {
         previewInput.innerHTML = '<div style="color: #adb5bd; font-style: italic;">No SVG to preview</div>';
         return;
@@ -89,8 +108,8 @@ function updatePreviewOutput(cssCode) {
             previewOutput.innerHTML = '';
             previewOutput.style.backgroundImage = `url("${urlMatch[1]}")`;
             previewOutput.style.backgroundSize = 'contain';
-            previewOutput.style.backgroundRepeat = 'no-repeat';
-            previewOutput.style.backgroundPosition = 'center';
+            previewOutput.style.backgroundRepeat = bgRepeatSelect ? bgRepeatSelect.value : 'no-repeat';
+            previewOutput.style.backgroundPosition = bgPositionSelect ? bgPositionSelect.value : 'center center';
         } else {
             previewOutput.innerHTML = '<div style="color: #dc3545;">Could not extract URL</div>';
         }
@@ -252,6 +271,14 @@ svgInput.addEventListener('input', updateOutput);
 copyBtn.addEventListener('click', copyToClipboard);
 
 clearBtn.addEventListener('click', handleClearPasteClick);
+
+if (bgRepeatSelect) {
+    bgRepeatSelect.addEventListener('change', updateOutput);
+}
+
+if (bgPositionSelect) {
+    bgPositionSelect.addEventListener('change', updateOutput);
+}
 
 if (themeToggleBtn) {
     themeToggleBtn.addEventListener('click', (e) => {

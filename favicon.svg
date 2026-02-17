@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#667eea" />
+      <stop offset="1" stop-color="#764ba2" />
+    </linearGradient>
+    <linearGradient id="blob" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.95" />
+      <stop offset="1" stop-color="#dbeafe" stop-opacity="0.85" />
+    </linearGradient>
+  </defs>
+
+  <!-- Rounded gradient background -->
+  <rect x="4" y="4" width="56" height="56" rx="18" fill="url(#bg)" />
+
+  <!-- Organic blob / droplet shape (no text) -->
+  <path
+    d="M33 16c-3.7 3.7-6.4 6.9-8.4 9.9-2.2 3.3-3.6 6.4-3.6 9.4 0 6.2 4.9 11.2 11 11.2 6.1 0 11-5 11-11.2 0-3.2-1.5-6.4-3.6-9.4-1.9-2.8-4.5-6-8.4-9.9z"
+    fill="url(#blob)"
+  />
+
+  <!-- Inner highlight ring -->
+  <circle cx="32" cy="34" r="7.5" fill="none" stroke="#6366f1" stroke-width="1.6" stroke-opacity="0.7" />
+
+  <!-- Small center dot -->
+  <circle cx="32" cy="34" r="2.2" fill="#4f46e5" />
+</svg>
